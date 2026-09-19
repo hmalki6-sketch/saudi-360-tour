@@ -1,113 +1,73 @@
 <!doctype html>
-<!-- جاهز للنشر على GitHub Pages: احفظ هذا الملف باسم index.html -->
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>اكتشف السعودية | الخريطة السياحية الفاخرة</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>اكتشف السعودية — تجربة سياحية تفاعلية</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap');
-:root{--p:#006B73;--t:#168A91;--sky:#65BFD0;--gold:#D99A45;--gold2:#F5E4C5;--bg:#061b21;--glass:#09272ecc;--line:#ffffff20}
-*{box-sizing:border-box}
-html,body{margin:0;height:100%;font-family:Tajawal,Arial,sans-serif;background:#041318;color:#fff}
-body{overflow:hidden}
-header{height:78px;display:flex;align-items:center;justify-content:space-between;padding:0 3.5%;background:#061b21e8;border-bottom:1px solid var(--line);backdrop-filter:blur(18px);position:relative;z-index:1000}
-.brand{display:flex;align-items:center;gap:13px}.logo{width:45px;height:45px;border-radius:14px;display:grid;place-items:center;border:1px solid #d99a4570;background:#ffffff08;font-size:23px}.brand h1{margin:0;font-size:22px;font-weight:900}.brand p{margin:2px 0 0;color:#9bbfc3;font-size:11px}
-.top{display:flex;gap:9px;align-items:center}.pill{padding:9px 14px;border:1px solid #ffffff20;background:#ffffff08;border-radius:30px;color:#d7ebed;font-size:12px}
-#map{position:absolute;inset:78px 0 0;background:#071c21}
-.leaflet-container{font-family:Tajawal,Arial,sans-serif;background:#071c21}
-.leaflet-control-zoom{border:1px solid #ffffff25!important;box-shadow:0 8px 30px #0008!important}.leaflet-control-zoom a{background:#09272e!important;color:#e8f4f5!important;border-color:#ffffff18!important}
-.leaflet-control-attribution{background:#061b21cc!important;color:#76979d!important}.leaflet-control-attribution a{color:#a9c9cd!important}
-.titlecard{position:absolute;right:30px;top:105px;z-index:900;width:min(360px,calc(100% - 60px));padding:22px;border-radius:24px;background:linear-gradient(145deg,#082b33e8,#061a20df);border:1px solid #ffffff1c;box-shadow:0 25px 70px #0009;backdrop-filter:blur(18px)}
-.titlecard .eyebrow{color:#e8c77f;font-size:11px;font-weight:800;letter-spacing:1.6px}.titlecard h2{font-size:29px;margin:5px 0 6px;background:linear-gradient(90deg,#fff,#bdebef,#e7c47f);-webkit-background-clip:text;color:transparent}.titlecard p{margin:0;color:#a9c6ca;font-size:13px;line-height:1.8}
-.status{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}.status span{font-size:11px;padding:6px 9px;border-radius:20px;background:#168a9120;border:1px solid #65bfd030;color:#bfe7ea}
-.pin-wrap{background:none!important;border:0!important}.pin-dot{width:21px;height:21px;border-radius:50%;background:#65bfd0;border:3px solid #fff;box-shadow:0 0 0 6px #65bfd035,0 0 28px #65bfd0;position:relative;cursor:pointer}.pin-dot:after{content:"";position:absolute;inset:-11px;border:1px solid #d99a45aa;border-radius:50%;animation:pulse 2s infinite}.pin-dot:hover{transform:scale(1.25);background:#f5d18b}.pin-label{position:absolute;right:17px;top:-7px;white-space:nowrap;padding:6px 10px;border-radius:10px;background:#061b21e8;border:1px solid #ffffff1d;color:#fff;font-size:11px;box-shadow:0 8px 22px #0007}
-@keyframes pulse{0%,100%{transform:scale(.55);opacity:.9}70%{transform:scale(1.35);opacity:0}}
-.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#09272e;color:#fff;border:1px solid #ffffff20;box-shadow:0 20px 50px #0009}.leaflet-popup-content{margin:0}.pop{min-width:230px;padding:15px}.pop h3{margin:0 0 5px}.pop p{margin:0 0 12px;color:#9ebcc0;font-size:12px;line-height:1.7}.pop button{width:100%;border:0;border-radius:10px;padding:10px;background:linear-gradient(100deg,#d99a45,#f1d18e);color:#17333a;font-family:inherit;font-weight:900;cursor:pointer}
-.side{position:absolute;left:25px;top:105px;bottom:28px;width:320px;z-index:900;padding:18px;border-radius:24px;background:linear-gradient(145deg,#082b33e8,#061a20df);border:1px solid #ffffff1c;box-shadow:0 25px 70px #0009;backdrop-filter:blur(18px);overflow:auto}.side h3{margin:0 0 14px}.dest{display:flex;align-items:center;gap:11px;padding:11px;border:1px solid #ffffff12;background:#ffffff06;border-radius:14px;margin-bottom:9px;cursor:pointer}.dest:hover{background:#ffffff0d;border-color:#d99a4540}.dest .ico{font-size:24px}.dest b{display:block;font-size:13px}.dest small{color:#85a8ad}.legend{margin-top:15px;padding:12px;border-radius:14px;background:#ffffff06;border:1px solid #ffffff12;color:#91b0b5;font-size:11px;line-height:1.8}.legend i{display:inline-block;width:9px;height:9px;background:#65bfd0;border-radius:50%;box-shadow:0 0 12px #65bfd0;margin-left:6px}
-.modal{display:none;position:fixed;inset:0;background:#020a0deb;z-index:3000;padding:20px;overflow:auto}.modalbox{max-width:1150px;margin:2vh auto;background:#071e24;border:1px solid #ffffff20;border-radius:28px;overflow:hidden;box-shadow:0 35px 100px #000}.modalhead{padding:17px 21px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(110deg,#0b424a,#071d23)}.modalhead h3{margin:0;font-size:20px}.modalhead span{color:#8eb3b8;font-size:11px}.close{border:1px solid #ffffff25;background:#ffffff08;color:#fff;border-radius:11px;padding:9px 13px;font-family:inherit;cursor:pointer}.video{aspect-ratio:16/9;background:#000}.video iframe{width:100%;height:100%;border:0}.body{padding:18px 22px;color:#a8c3c7;line-height:1.8}.body a{color:#e7c47f}
-@media(max-width:900px){.side{left:15px;right:15px;bottom:15px;top:auto;width:auto;max-height:190px;display:flex;gap:8px;overflow-x:auto}.side h3,.legend{display:none}.dest{min-width:155px;margin:0}.titlecard{right:15px;top:93px;width:300px}.titlecard p{display:none}}
-@media(max-width:600px){.top .pill{display:none}.brand h1{font-size:18px}.titlecard{width:250px;padding:15px}.titlecard h2{font-size:22px}.modal{padding:8px}.modalbox{margin:4vh auto}}
+:root{--bg:#06181b;--panel:rgba(7,28,32,.9);--gold:#d9a85c;--gold2:#f4d49a;--teal:#168a91;--cyan:#65bfd0;--text:#f8fbfb;--muted:#a9c3c6}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;font-family:Tahoma,Arial,sans-serif;background:var(--bg);color:var(--text);overflow:hidden}
+#map{position:fixed;inset:0;z-index:0}.leaflet-tile{filter:brightness(.48) saturate(.55) contrast(1.12)}
+.leaflet-control-attribution{background:rgba(0,0,0,.45)!important;color:#bcd0d2!important}.leaflet-control-attribution a{color:var(--gold)!important}
+.topbar{position:fixed;z-index:1000;top:18px;right:20px;left:20px;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.brand,.titlecard,.side{pointer-events:auto}.brand{display:flex;align-items:center;gap:12px;background:rgba(5,25,29,.84);border:1px solid rgba(217,168,92,.35);backdrop-filter:blur(14px);padding:10px 16px;border-radius:18px;box-shadow:0 15px 50px rgba(0,0,0,.3)}
+.saudi{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(145deg,#0d684c,#0a3f33);font-size:19px}.brand b{font-size:15px}.brand small{display:block;color:var(--muted);margin-top:2px}
+.titlecard{max-width:420px;margin-right:auto;margin-left:22px;background:linear-gradient(135deg,rgba(5,25,29,.94),rgba(7,37,42,.82));border:1px solid rgba(217,168,92,.36);border-radius:24px;padding:20px 22px;box-shadow:0 22px 70px rgba(0,0,0,.38);backdrop-filter:blur(18px)}
+.kicker{color:var(--gold2);font-size:11px;letter-spacing:2px;margin-bottom:8px}.titlecard h1{margin:0;font-size:28px}.titlecard p{margin:8px 0 0;color:#c6d9da;line-height:1.7;font-size:13px}
+.side{position:fixed;z-index:1000;top:118px;left:20px;width:280px;max-height:calc(100vh - 145px);overflow:auto;padding:12px;border-radius:24px;background:rgba(5,24,28,.82);border:1px solid rgba(101,191,208,.18);backdrop-filter:blur(18px);box-shadow:0 20px 70px rgba(0,0,0,.35)}
+.side h2{font-size:15px;margin:4px 8px 12px}.card{padding:13px;margin:8px 0;border-radius:16px;background:linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.07);cursor:pointer;transition:.25s}.card:hover{transform:translateY(-2px);border-color:rgba(217,168,92,.45);background:rgba(217,168,92,.08)}
+.card b{font-size:14px}.card span{display:block;color:var(--muted);font-size:11px;margin-top:4px}
+.pin{width:22px;height:22px;border-radius:50%;background:radial-gradient(circle,#fff 0 13%,#d9a85c 14% 34%,#168a91 35% 57%,transparent 58%);box-shadow:0 0 0 6px rgba(217,168,92,.1),0 0 25px rgba(101,191,208,.9);animation:pulse 1.8s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 13px rgba(217,168,92,0),0 0 34px rgba(101,191,208,1)}}
+.leaflet-marker-icon .label{position:absolute;right:27px;top:-7px;white-space:nowrap;padding:5px 9px;border-radius:9px;background:rgba(5,24,28,.88);border:1px solid rgba(217,168,92,.28);font-size:11px;color:#fff}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#092126;color:#fff;border:1px solid rgba(217,168,92,.3)}.leaflet-popup-content{margin:13px 15px}.pop-title{font-weight:700;margin-bottom:8px}.pop-btn{border:0;background:linear-gradient(135deg,#d9a85c,#f0cf95);color:#13272a;padding:8px 12px;border-radius:10px;font-weight:700;cursor:pointer}
+.overlay{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(10px)}
+.modal{width:min(1050px,96vw);max-height:94vh;background:linear-gradient(145deg,#061a1e,#0a2c31);border:1px solid rgba(217,168,92,.45);border-radius:28px;overflow:hidden;box-shadow:0 35px 120px rgba(0,0,0,.7)}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:15px 18px;border-bottom:1px solid rgba(255,255,255,.08)}.modal-head h3{margin:0;font-size:18px}.close{width:38px;height:38px;border-radius:50%;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:white;font-size:22px;cursor:pointer}
+.video-wrap{background:#000;aspect-ratio:16/9;display:grid;place-items:center}video{width:100%;height:100%;object-fit:contain;background:#000}
+.modal-foot{padding:12px 18px;color:#a9c3c6;font-size:12px;display:flex;justify-content:space-between;gap:12px}.modal-foot a{color:var(--gold2);text-decoration:none}
+.hint{position:fixed;z-index:900;bottom:18px;right:20px;background:rgba(5,24,28,.72);border:1px solid rgba(255,255,255,.08);border-radius:13px;padding:8px 12px;color:#bdd0d1;font-size:11px}
+@media(max-width:800px){.topbar{top:10px;right:10px;left:10px}.brand{padding:8px 11px}.brand small{display:none}.titlecard{display:none}.side{left:10px;right:10px;top:auto;bottom:10px;width:auto;max-height:30vh;display:flex;gap:8px;overflow-x:auto;overflow-y:hidden;padding:8px}.side h2{display:none}.card{min-width:145px;margin:0}.hint{display:none}.leaflet-control-zoom{display:none}.modal{border-radius:20px}.modal-foot{font-size:10px}}
 </style>
 </head>
 <body>
-<header>
- <div class="brand"><div class="logo">🇸🇦</div><div><h1>اكتشف السعودية</h1><p>خريطة سياحية فاخرة • تجوال افتراضي • بانوراما 360°</p></div></div>
- <div class="top"><span class="pill">✦ خريطة جغرافية حقيقية</span><span class="pill">● 7 وجهات</span></div>
-</header>
-
 <div id="map"></div>
-
-<section class="titlecard">
- <div class="eyebrow">SAUDI ARABIA • INTERACTIVE TOURISM MAP</div>
- <h2>رحلة فوق المملكة</h2>
- <p>هذه خريطة جغرافية فعلية للمملكة، وليست رسماً تقريبياً. النقاط المضيئة موضوعة بإحداثيات الوجهات السياحية.</p>
- <div class="status"><span>🗺️ حدود فعلية</span><span>✨ نقاط تفاعلية</span><span>360°</span></div>
-</section>
-
-<aside class="side">
- <h3>وجهات التجوال</h3>
- <div id="destinations"></div>
- <div class="legend"><i></i> اضغطي على النقطة المضيئة لفتح التجربة البانورامية داخل نافذة سينمائية.<br>الخريطة الأساسية تُحمّل من OpenStreetMap، وحدود المملكة من بيانات جغرافية مفتوحة.</div>
-</aside>
-
-<div class="modal" id="modal">
- <div class="modalbox">
-  <div class="modalhead"><div><h3 id="mtitle"></h3><span id="mtype"></span></div><button class="close" onclick="closeTour()">إغلاق ✕</button></div>
-  <div class="video" id="video"></div>
-  <div class="body" id="mbody"></div>
- </div>
+<div class="topbar">
+<div class="brand"><div class="saudi">🇸🇦</div><div><b>اكتشف السعودية</b><small>رحلة بصرية عبر الوجهات</small></div></div>
+<div class="titlecard"><div class="kicker">SAUDI ARABIA · VIRTUAL JOURNEY</div><h1>من الخريطة إلى المشهد</h1><p>اختاري أي وجهة مضيئة على الخريطة لتنتقلي مباشرة إلى المقطع السياحي الخاص بها.</p></div>
 </div>
-
+<aside class="side"><h2>الوجهات السياحية</h2><div id="cards"></div></aside>
+<div class="hint">اضغطي على أي نقطة مضيئة لبدء الجولة</div>
+<div class="overlay" id="overlay" onclick="closeIfOutside(event)">
+<div class="modal"><div class="modal-head"><h3 id="modalTitle"></h3><button class="close" onclick="closeTour()">×</button></div>
+<div class="video-wrap"><video id="tourVideo" controls playsinline preload="metadata"></video></div>
+<div class="modal-foot"><span id="modalMeta"></span><a id="openVideo" href="#" target="_blank" rel="noopener">فتح المقطع</a></div></div></div>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
 const places=[
- {id:'alula',name:'العلا',lat:26.6087,lng:37.9232,icon:'🏜️',type:'جولة / بانوراما 360°',video:'rzJKpV9C9B8',desc:'العلا والبلدة القديمة من أبرز الوجهات التراثية والسياحية في المملكة.'},
- {id:'diriyah',name:'الدرعية',lat:24.7333,lng:46.5750,icon:'🏛️',type:'تجربة افتراضية رسمية',url:'https://www.diriyah.sa/ar/at-turaif',desc:'حي الطريف التاريخي وتجارب الدرعية الرقمية.'},
- {id:'riyadh',name:'الرياض',lat:24.7136,lng:46.6753,icon:'🏙️',type:'جولة 360°',video:'WToo33dAdcM',desc:'محطة حضرية في قلب العاصمة السعودية.'},
- {id:'jeddah',name:'جدة التاريخية',lat:21.5433,lng:39.1728,icon:'🌊',type:'جولة 360°',video:'JwBqaFdk6_0',desc:'جدة التاريخية على ساحل البحر الأحمر.'},
- {id:'abha',name:'أبها',lat:18.2164,lng:42.5053,icon:'⛰️',type:'وجهة طبيعية',desc:'مرتفعات عسير والمشهد الجبلي.'},
- {id:'alahsa',name:'الأحساء',lat:25.3830,lng:49.5860,icon:'🌴',type:'وجهة تراثية وطبيعية',desc:'الواحة والنخيل والمواقع التراثية في الأحساء.'},
- {id:'dammam',name:'الدمام',lat:26.4207,lng:50.0888,icon:'🌊',type:'وجهة ساحلية',desc:'الواجهة البحرية والخليج العربي.'}
-];
-
-const map=L.map('map',{zoomControl:true,scrollWheelZoom:true,minZoom:4,maxZoom:10}).setView([24.1,44.3],5.2);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'© OpenStreetMap contributors'}).addTo(map);
-
-// تحويل خريطة الأساس إلى مظهر داكن/فاخر بصرياً
-const style=document.createElement('style');
-style.textContent='.leaflet-tile{filter:brightness(.42) saturate(.55) hue-rotate(145deg) contrast(1.12)}';
-document.head.appendChild(style);
-
-// حدود المملكة الفعلية من GeoJSON
-fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-.then(r=>r.json()).then(data=>{
- const sa=data.features.find(f=>f.properties.ADMIN==='Saudi Arabia'||f.properties.name==='Saudi Arabia');
- if(sa){
-  L.geoJSON(sa,{style:{color:'#e5c27c',weight:2.2,opacity:.95,fillColor:'#006b73',fillOpacity:.18}}).addTo(map);
-  map.fitBounds(L.geoJSON(sa).getBounds().pad(.16));
- }
-}).catch(()=>{});
-
-const iconHTML=p=>L.divIcon({className:'pin-wrap',html:`<div class="pin-dot"><span class="pin-label">${p.name}</span></div>`,iconSize:[22,22],iconAnchor:[11,11]});
+{id:"j",name:"جدة",en:"Jeddah",lat:21.5433,lng:39.1728,video:"videos/j.mp4"},
+{id:"r",name:"الرياض",en:"Riyadh",lat:24.7136,lng:46.6753,video:"videos/r.mp4"},
+{id:"a",name:"العلا",en:"AlUla",lat:26.608,lng:37.9232,video:"videos/a.mp4"},
+{id:"t",name:"تبوك",en:"Tabuk",lat:28.3838,lng:36.555,video:"videos/t.mp4"},
+{id:"h",name:"الأحساء",en:"Al Ahsa",lat:25.4297,lng:49.5661,video:"videos/h.mp4"},
+{id:"n",name:"نجران",en:"Najran",lat:17.4933,lng:44.1277,video:"videos/n.mp4"},
+{id:"s",name:"السودة",en:"As-Soudah",lat:18.264,lng:42.364,video:"videos/s.mp4"},
+{id:"f",name:"فيفاء",en:"Fifa",lat:17.263,lng:43.106,video:"videos/f.mp4"}];
+const map=L.map('map',{zoomControl:true}).setView([24.1,44.7],5.4);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18,attribution:'© OpenStreetMap contributors'}).addTo(map);
+const icon=n=>L.divIcon({className:'',html:`<div class="pin"><span class="label">${n}</span></div>`,iconSize:[22,22],iconAnchor:[11,11]});
+const cards=document.getElementById('cards');
 places.forEach(p=>{
- const m=L.marker([p.lat,p.lng],{icon:iconHTML(p),title:p.name}).addTo(map);
- m.bindPopup(`<div class="pop"><h3>${p.icon} ${p.name}</h3><p>${p.type}</p><button onclick="openTour('${p.id}')">فتح التجربة ✦</button></div>`);
+const m=L.marker([p.lat,p.lng],{icon:icon(p.name)}).addTo(map);
+m.bindPopup(`<div class="pop-title">${p.name}</div><button class="pop-btn" onclick="openTour('${p.id}')">شاهد الجولة</button>`);
+m.on('click',()=>map.flyTo([p.lat,p.lng],7,{duration:1.2}));
+const c=document.createElement('div');c.className='card';c.innerHTML=`<b>${p.name}</b><span>${p.en} · جولة مصوّرة</span>`;
+c.onclick=()=>{map.flyTo([p.lat,p.lng],7,{duration:1.2});setTimeout(()=>openTour(p.id),700)};cards.appendChild(c);
 });
-const list=document.getElementById('destinations');
-places.forEach(p=>list.innerHTML+=`<div class="dest" onclick="fly('${p.id}')"><div class="ico">${p.icon}</div><div><b>${p.name}</b><small>${p.type}</small></div></div>`);
-function fly(id){const p=places.find(x=>x.id===id);map.flyTo([p.lat,p.lng],8,{duration:1.4});setTimeout(()=>openTour(id),900)}
-function openTour(id){
- const p=places.find(x=>x.id===id);document.getElementById('mtitle').textContent=p.icon+' '+p.name;document.getElementById('mtype').textContent=p.type;
- document.getElementById('mbody').innerHTML=p.desc+(p.url?`<br><br><a href="${p.url}" target="_blank">فتح المصدر الرسمي ↗</a>`:'');
- const box=document.getElementById('video');
- if(p.video) box.innerHTML=`<iframe src="https://www.youtube.com/embed/${p.video}?rel=0&modestbranding=1&playsinline=1&origin=${encodeURIComponent(location.origin)}" referrerpolicy="strict-origin-when-cross-origin" title="${p.name} 360" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`;
- else box.innerHTML='<div style="height:100%;display:grid;place-items:center;color:#9bbcc0;text-align:center;padding:30px">هذه الوجهة مرتبطة بمصدر الجولة/المعلومات الرسمي أعلاه.</div>';
- document.getElementById('modal').style.display='block';
-}
-function closeTour(){document.getElementById('modal').style.display='none';document.getElementById('video').innerHTML=''}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeTour()});
+function openTour(id){const p=places.find(x=>x.id===id);if(!p)return;const o=document.getElementById('overlay'),v=document.getElementById('tourVideo');document.getElementById('modalTitle').textContent=p.name;document.getElementById('modalMeta').textContent=`${p.en} · الفيديو المرفوع للمشروع`;v.pause();v.src=p.video;v.load();document.getElementById('openVideo').href=p.video;o.style.display='flex';document.body.style.overflow='hidden'}
+function closeTour(){const o=document.getElementById('overlay'),v=document.getElementById('tourVideo');v.pause();v.removeAttribute('src');v.load();o.style.display='none';document.body.style.overflow=''}
+function closeIfOutside(e){if(e.target.id==='overlay')closeTour()}document.addEventListener('keydown',e=>{if(e.key==='Escape')closeTour()});
 </script>
 </body>
 </html>
